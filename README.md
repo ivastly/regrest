@@ -1,1 +1,2 @@
-# Regrest - **Regr**ession T**est**ing Tool
+# Regrest
+**Regr**ession T**est**ing Tool
