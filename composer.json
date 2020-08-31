@@ -1,0 +1,21 @@
+{
+    "name": "ivastly/regrest",
+    "description": "Regression Testing Tool - run tests related to current changes only.",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "ivastly",
+            "email": "ivastly@github.com"
+        }
+    ],
+    "require": {
+        "php": "7.3",
+        "symfony/console": "^5.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ivastly\\Regrest\\": "src/"
+        }
+    }
+}
