@@ -3,7 +3,7 @@
 
 ## Rationale
 Run tests which cover your current changes only. 
-All other tests are _guaranteed_ to be green, just because you did not touch the code they test.
+All other tests are almost _guaranteed_ to be green, just because you did not touch the code they test.
 
 * Run just a few tests instead of the whole gigantic test suite without any downsides.
 * Test framework, coverage format, platform agnostic.
