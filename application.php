@@ -8,6 +8,8 @@ use Symfony\Component\Console\Application;
 
 $application = new Application();
 
+var_dump(get_class($application));
+
 // ... register commands
 
 $application->run();
