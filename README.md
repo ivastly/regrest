@@ -1,7 +1,7 @@
-# Regrest
+# Regrest.
 **Regr**ession T**est**ing Tool
 
-## Rationale
+## Rationale.
 Run tests which cover your current changes only. 
 All other tests are _guaranteed_ to be green, just because you did not touch the code they test.
 
@@ -9,20 +9,35 @@ All other tests are _guaranteed_ to be green, just because you did not touch the
 * Test framework, coverage format, platform agnostic.
 * Ideal for massive refactoring.
 * Checks if the coverage report is stale and throws a warning.
-* Inspired by `--change-since` option of [JEST](https://jestjs.io/docs/en/cli#--changedsince).
+* Inspired by `--changed-since` option of [JEST](https://jestjs.io/docs/en/cli#--changedsince).
 
-## Installation
+## How it works.
+* Changed files/lines are extracted from git.
+* Current test coverage report is provided via command line option.
+* Finally, only relevant tests are run: those tests which cover the changed lines. 
+
+# Use case.
+Of course, this is tool **is not a replacement for classic full cycle of all tests during build time**.
+Because there is an infinite amount of edge cases when this approach can lead to false positive results:
+* configuration changes
+* test environment changes
+* fixture changes
+* usage of `rand`, 
+* usage of `eval`, or any other form of exotic source code loading
+* etc.
+
+## Installation.
 ```bash
 git clone https://github.com/ivastly/regrest
 ln -s $(pwd)/regrest/bin/regrest /usr/bin/regrest
 ```
 
-### Prerequisites
+### Prerequisites.
 * git as VCS
 * fresh coverage report in a machine-readable format
 
 
-## Usage
+## Usage.
 ```bash
 # PHPUnit
 regrest --tests-dir=/path/to/tests --changes-since=master --coverage-file=/path/to/coverage.json --command="vendor/bin/phpunit" --framework="phpunit"
@@ -31,15 +46,15 @@ regrest --tests-dir=/path/to/tests --changes-since=master --coverage-file=/path/
 regrest --tests-dir=/path/to/tests --changes-since=master --coverage-file=/path/to/coverage.json --command="make tests-all @tests" --framework="codeception"
 ```
 
-## How it works in action
+## How it works in action.
 *TODO gif here*
 
-## Supported coverage formats
+## Supported coverage formats.
 Format | Support
 --- | ---
 coverage.json | yes
 
-## Supported frameworks
+## Supported frameworks.
 Framework | Language | Support
 --- | --- | ---
 PHPUnit | PHP | yes
