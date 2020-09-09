@@ -26,6 +26,9 @@ Because there is an infinite amount of edge cases when this approach can lead to
 * usage of `eval`, or any other form of exotic source code loading
 * etc.
 
+In short, **Regrest detects all software defects introduced by changes of "green" code from test coverage report**.
+If the defect is introduced by some other changes (e.g. you messed up Dockerfile of some dependency), this tool cannot detect that.
+
 ## Installation.
 ```bash
 git clone https://github.com/ivastly/regrest
