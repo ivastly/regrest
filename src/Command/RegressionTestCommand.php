@@ -45,7 +45,7 @@ class RegressionTestCommand extends Command
 			'command',
 			null,
 			InputOption::VALUE_REQUIRED,
-			'CLI command which runs the test suite, e.g. vendor/bin/phpunit. This option must comply with `--framework` option.'
+			'CLI command which runs the test suite, e.g. `vendor/bin/phpunit`. This option must comply with `--framework` option.'
 		);
 
 		$this->addOption(

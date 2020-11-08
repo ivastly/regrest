@@ -22,9 +22,7 @@ Because there is an infinite amount of edge cases when this approach can lead to
 * configuration changes
 * test environment changes
 * fixture changes
-* usage of `rand`, 
-* usage of `eval`, or any other form of exotic source code loading
-* etc.
+* usage of `eval`, `rand`, network, etc.
 
 In short, **Regrest detects all software defects introduced by changes of "green" code from test coverage report**.
 If the defect is introduced by some other changes (e.g. you messed up Dockerfile of some dependency), this tool cannot detect that.
@@ -43,10 +41,10 @@ ln -s $(pwd)/regrest/bin/regrest /usr/bin/regrest
 ## Usage.
 ```bash
 # PHPUnit
-regrest --tests-dir=/path/to/tests --changes-since=master --coverage-file=/path/to/coverage.json --command="vendor/bin/phpunit" --framework="phpunit"
+regrest --changes-since=master --coverage-file=/path/to/coverage.json --command="vendor/bin/phpunit" --framework="phpunit"
 
-# Codeception (`test-all` target launches Codeception, @tests is replaced by the actual list of tests in the `--command` option)
-regrest --tests-dir=/path/to/tests --changes-since=master --coverage-file=/path/to/coverage.json --command="make tests-all @tests" --framework="codeception"
+# Codeception (`test-all` target launches Codeception, @tests placeholder is replaced on-the-fly by the actual list of tests to run)
+regrest --changes-since=master --coverage-file=/path/to/coverage.json --command="make tests-all @tests" --framework="codeception"
 ```
 
 ## How it works in action.
@@ -62,3 +60,9 @@ Framework | Language | Support
 --- | --- | ---
 PHPUnit | PHP | yes
 Codeception | PHP | yes
+
+## Contributing.
+Contributions are welcome.
+
+## License.
+see [LICENSE](/LICENSE)

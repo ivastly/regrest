@@ -1,0 +1,20 @@
+{
+    "name": "regrest/php-project-using-phpunit",
+    "description": "This is a fixture project to test Regrest - regression testing tool.",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "ivastly",
+            "email": "ivastly@github.com"
+        }
+    ],
+    "require": {
+        "phpunit/phpunit": "^9.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ivastly\\Regrest\\Test\\Fixtures\\PhpProjectUsingPhpunit\\": "src/"
+        }
+    }
+}
