@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Ivastly\Regrest\Command;
 
 use InvalidArgumentException;
+use SebastianBergmann\CodeCoverage\CodeCoverage;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Webmozart\Assert\Assert;
 
 class RegressionTestCommand extends Command
 {
@@ -21,6 +23,11 @@ class RegressionTestCommand extends Command
 	private string $command;
 
 	private string $framework;
+
+	private const PHPUNIT_FRAMEWORK = 'phpunit';
+	private const ALL_FRAMEWORKS    = [
+		self::PHPUNIT_FRAMEWORK,
+	];
 
 	protected function configure(): void
 	{
@@ -61,16 +68,26 @@ class RegressionTestCommand extends Command
 
 	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
-		try
-		{
+		try {
 			$this->readOptions($input);
 		}
-		catch (InvalidArgumentException $exception)
-		{
+		catch (InvalidArgumentException $exception) {
 			$output->writeln($exception->getMessage());
 
 			return self::FAILURE;
 		}
+
+		// Get list of changed files from git.
+
+		// Get list of tests (FQCNs) which cover changed files from coverage report.
+		/** @var CodeCoverage $coverage */
+		$coverage = require $this->coverageFile;
+
+		if ($this->framework === self::PHPUNIT_FRAMEWORK) {
+			Assert::subclassOf($coverage, CodeCoverage::class);
+		}
+
+		// Run the passed test-running command with @test placeholder replaced with proper --filter option.
 
 		$output->writeln('Done.');
 
@@ -81,27 +98,25 @@ class RegressionTestCommand extends Command
 	{
 		$this->changedSince = (string)$input->getOption('changed-since');
 
-		if (!$input->hasOption('coverage-file'))
-		{
+		if (!$input->getOption('coverage-file')) {
 			throw new InvalidArgumentException('--coverage-file option is required.');
 		}
 
 		$this->coverageFile = (string)$input->getOption('coverage-file');
-		if (!file_exists($this->coverageFile))
-		{
+		if (!file_exists($this->coverageFile)) {
 			throw new InvalidArgumentException("Coverage file {$this->coverageFile} is not readable.");
 		}
 
-		if (!$input->hasOption('command'))
-		{
+		if (!$input->getOption('command')) {
 			throw new InvalidArgumentException('--command option is required.');
 		}
 		$this->command = (string)$input->getOption('command');
 
-		if (!$input->hasOption('framework'))
-		{
+		if (!$input->getOption('framework')) {
 			throw new InvalidArgumentException('framework option is required.');
 		}
+
 		$this->framework = (string)$input->getOption('framework');
+		Assert::inArray($this->framework, self::ALL_FRAMEWORKS);
 	}
 }

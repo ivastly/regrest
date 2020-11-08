@@ -41,25 +41,20 @@ ln -s $(pwd)/regrest/bin/regrest /usr/bin/regrest
 ## Usage.
 ```bash
 # PHPUnit
-regrest --changes-since=master --coverage-file=/path/to/coverage.json --command="vendor/bin/phpunit" --framework="phpunit"
+regrest --changes-since=master --coverage-file=/path/to/coverage.php --command="vendor/bin/phpunit @tests test" --framework="phpunit"
 
 # Codeception (`test-all` target launches Codeception, @tests placeholder is replaced on-the-fly by the actual list of tests to run)
-regrest --changes-since=master --coverage-file=/path/to/coverage.json --command="make tests-all @tests" --framework="codeception"
+regrest --changes-since=master --coverage-file=/path/to/coverage.php --command="make tests-all @tests" --framework="codeception"
 ```
 
 ## How it works in action.
 *TODO gif here*
 
-## Supported coverage formats.
-Format | Support
---- | ---
-coverage.json | yes
-
 ## Supported frameworks.
-Framework | Language | Support
+Framework | Coverage Format | Language | Support
 --- | --- | ---
-PHPUnit | PHP | yes
-Codeception | PHP | yes
+PHPUnit | PHPUnit .php | PHP | 🟢
+Codeception | PHPUnit .php | PHP | 🟡 
 
 ## Contributing.
 Contributions are welcome.

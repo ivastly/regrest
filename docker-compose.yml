@@ -5,6 +5,8 @@ services:
     build:
       context: docker/php
     working_dir: /app
+    environment:
+      - PHP_IDE_CONFIG=serverName=docker
     volumes:
       - .:/app
       - ./docker/php/config/custom-php.ini:/usr/local/etc/php/conf.d/custom-php.ini:ro
