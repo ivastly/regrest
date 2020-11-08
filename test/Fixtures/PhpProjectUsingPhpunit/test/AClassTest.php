@@ -5,6 +5,9 @@ declare(strict_types=1);
 use Ivastly\Regrest\Test\Fixtures\PhpProjectUsingPhpunit\AClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \Ivastly\Regrest\Test\Fixtures\PhpProjectUsingPhpunit\AClass
+ */
 class AClassTest extends TestCase
 {
 	private AClass $sut;

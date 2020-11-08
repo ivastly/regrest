@@ -1,3 +1,4 @@
 /vendor
 /test/sandbox
 test/Fixtures/PhpProjectUsingPhpunit/vendor
+test/Fixtures/PhpProjectUsingPhpunit/test/output/
