@@ -41,10 +41,8 @@ ln -s $(pwd)/regrest/bin/regrest /usr/bin/regrest
 ## Usage.
 ```bash
 # PHPUnit
-regrest --changes-since=master --coverage-file=/path/to/coverage.php --command="vendor/bin/phpunit @tests test" --framework="phpunit"
-
-# Codeception (`test-all` target launches Codeception, @tests placeholder is replaced on-the-fly by the actual list of tests to run)
-regrest --changes-since=master --coverage-file=/path/to/coverage.php --command="make tests-all @tests" --framework="codeception"
+# In case of PHPUnit, @tests placeholder will be replaced with `--filter 'Path\To\Test1|...|Path\To\TestN'`
+regrest --changes-since=origin/master --coverage-file=/path/to/coverage.php --command="vendor/bin/phpunit @tests test" --framework="phpunit"
 ```
 
 ## How it works in action.

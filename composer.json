@@ -13,7 +13,9 @@
         "php": "7.4",
         "symfony/console": "^5.1",
         "phpunit/php-code-coverage": "^9.2",
-        "webmozart/assert": "^1.9"
+        "webmozart/assert": "^1.9",
+        "cpliakas/git-wrapper": "^3.0",
+        "symfony/process": "^5.1"
     },
     "autoload": {
         "psr-4": {

@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Ivastly\Regrest\Command;
 
 use InvalidArgumentException;
-use SebastianBergmann\CodeCoverage\CodeCoverage;
+use Ivastly\Regrest\Presentation\Runner;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Webmozart\Assert\Assert;
 
-class RegressionTestCommand extends Command
+class RegrestCommand extends Command
 {
 	protected static $defaultName = 'regrest';
 
@@ -24,21 +24,19 @@ class RegressionTestCommand extends Command
 
 	private string $framework;
 
-	private const PHPUNIT_FRAMEWORK = 'phpunit';
+	public const  PHPUNIT_FRAMEWORK = 'phpunit';
 	private const ALL_FRAMEWORKS    = [
 		self::PHPUNIT_FRAMEWORK,
 	];
 
 	protected function configure(): void
 	{
-		// regrest --changed-since=master --coverage-file=/path/to/coverage.json --command="vendor/bin/phpunit" --framework="phpunit"
-
 		$this->addOption(
 			'changed-since',
 			null,
 			InputOption::VALUE_REQUIRED,
 			'git branch name which is compared against current one.',
-			'master'
+			'origin/master'
 		);
 
 		$this->addOption(
@@ -77,17 +75,15 @@ class RegressionTestCommand extends Command
 			return self::FAILURE;
 		}
 
-		// Get list of changed files from git.
+		$runner = new Runner();
 
-		// Get list of tests (FQCNs) which cover changed files from coverage report.
-		/** @var CodeCoverage $coverage */
-		$coverage = require $this->coverageFile;
-
-		if ($this->framework === self::PHPUNIT_FRAMEWORK) {
-			Assert::subclassOf($coverage, CodeCoverage::class);
-		}
-
-		// Run the passed test-running command with @test placeholder replaced with proper --filter option.
+		$runner->run(
+			$this->changedSince,
+			$this->coverageFile,
+			$this->framework,
+			$this->command,
+			$output
+		);
 
 		$output->writeln('Done.');
 
