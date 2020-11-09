@@ -20,8 +20,6 @@ class RegrestCommand extends Command
 
 	private string $coverageFile;
 
-	private string $command;
-
 	private string $framework;
 
 	public const  PHPUNIT_FRAMEWORK = 'phpunit';
@@ -44,13 +42,6 @@ class RegrestCommand extends Command
 			null,
 			InputOption::VALUE_REQUIRED,
 			'Path to file with test coverage information, e.g. /path/to/coverage.json'
-		);
-
-		$this->addOption(
-			'command',
-			null,
-			InputOption::VALUE_REQUIRED,
-			'CLI command which runs the test suite, e.g. `vendor/bin/phpunit`. This option must comply with `--framework` option.'
 		);
 
 		$this->addOption(
@@ -81,11 +72,8 @@ class RegrestCommand extends Command
 			$this->changedSince,
 			$this->coverageFile,
 			$this->framework,
-			$this->command,
 			$output
 		);
-
-		$output->writeln('Done.');
 
 		return self::SUCCESS;
 	}
@@ -102,11 +90,6 @@ class RegrestCommand extends Command
 		if (!file_exists($this->coverageFile)) {
 			throw new InvalidArgumentException("Coverage file {$this->coverageFile} is not readable.");
 		}
-
-		if (!$input->getOption('command')) {
-			throw new InvalidArgumentException('--command option is required.');
-		}
-		$this->command = (string)$input->getOption('command');
 
 		if (!$input->getOption('framework')) {
 			throw new InvalidArgumentException('framework option is required.');
