@@ -21,6 +21,6 @@ class GitClient implements AbleToListChangedFiles
 
 	public function getChangedFilesPaths(): array
 	{
-		return explode(PHP_EOL, $this->git->git("git diff --name-only {$this->changedSince}.."));
+		return explode(PHP_EOL, $this->git->git("diff --name-only {$this->changedSince}.."));
 	}
 }

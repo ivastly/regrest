@@ -22,7 +22,7 @@ class PhpUnitNativeFileParser implements AbleToProvideCoverageInfo
 	{
 		/** @var CodeCoverage $coverage */
 		$coverage = require $this->coverageFilePath;
-		Assert::subclassOf($coverage, CodeCoverage::class, "Coverage report file is invalid.");
+		Assert::isInstanceOf($coverage, CodeCoverage::class, 'Coverage report file is invalid.');
 
 		$coveredSourceFileToArrayOfTestsMap = [];
 		foreach ($coverage->getData() as $data) {
@@ -32,7 +32,7 @@ class PhpUnitNativeFileParser implements AbleToProvideCoverageInfo
 			}
 		}
 
-		Assert::notEmpty($coveredSourceFileToArrayOfTestsMap, "Nothing is covered, according to the report.");
+		Assert::notEmpty($coveredSourceFileToArrayOfTestsMap, 'Nothing is covered, according to the report.');
 
 		return $coveredSourceFileToArrayOfTestsMap;
 	}
