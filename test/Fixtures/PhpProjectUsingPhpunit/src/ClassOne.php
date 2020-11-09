@@ -9,7 +9,7 @@ class ClassOne
 	public function f(): int
 	{
 		// This function is running very slow, unit test will be same slow.
-		sleep(1);
+		sleep(10);
 
 		return 1;
 	}
