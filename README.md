@@ -42,6 +42,7 @@ ln -s $(pwd)/regrest/bin/regrest /usr/bin/regrest
 ```bash
 # PHPUnit
 # In case of PHPUnit, @tests placeholder will be replaced with `--filter 'Path\To\Test1|...|Path\To\TestN'`
+
 regrest --changes-since=origin/master --coverage-file=/path/to/coverage.php --command="vendor/bin/phpunit @tests test" --framework="phpunit"
 ```
 

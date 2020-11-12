@@ -28,6 +28,13 @@ class PhpUnitNativeFileParser implements AbleToProvideCoverageInfo
 			$coveredSourceFileToArrayOfTestsMap[$file] = [];
 			foreach ($lineToTestsArrayMap as $arrayOfTests) {
 				if (is_array($arrayOfTests)) { //Sometimes it is `null` for unknown reason.
+					$arrayOfTests                              = array_map(
+						function (string $testFQCN)
+						{
+							return $this->escapeBackslashes($testFQCN);
+						},
+						$arrayOfTests
+					);
 					$coveredSourceFileToArrayOfTestsMap[$file] = array_unique(array_merge($coveredSourceFileToArrayOfTestsMap[$file], $arrayOfTests));
 				}
 			}
@@ -36,5 +43,11 @@ class PhpUnitNativeFileParser implements AbleToProvideCoverageInfo
 		Assert::notEmpty($coveredSourceFileToArrayOfTestsMap, 'Nothing is covered, according to the report.');
 
 		return $coveredSourceFileToArrayOfTestsMap;
+	}
+
+	private function escapeBackslashes(string $testFQCN): string
+	{
+		// Because of shell and double quotes, we always loose a layer of backslashes. That's why there so many.
+		return str_replace('\\', '\\\\\\\\', $testFQCN);
 	}
 }

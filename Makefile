@@ -10,17 +10,25 @@ run:
 
 PHPUNIT_ROOT=test/Fixtures/PhpProjectUsingPhpunit
 
+# generates coverage report
 full-test-phpunit:
 	docker-compose run php php $(PHPUNIT_ROOT)/vendor/bin/phpunit --debug --colors=always --bootstrap $(PHPUNIT_ROOT)/vendor/autoload.php --coverage-filter=$(PHPUNIT_ROOT)/src --coverage-php=$(PHPUNIT_ROOT)/test/output/coverage.php --coverage-html=$(PHPUNIT_ROOT)/test/output/coverage.html $(PHPUNIT_ROOT)/test
 
-# does not generate coverage, has `options` argument
-regression-test-phpunit:
+# does not generate coverage
+regression-test-phpunit: # one needs to pass output of regrest command to `options` argument
 	docker-compose run php php $(PHPUNIT_ROOT)/vendor/bin/phpunit --debug --colors=always --bootstrap $(PHPUNIT_ROOT)/vendor/autoload.php --coverage-filter=$(PHPUNIT_ROOT)/src $(options) $(PHPUNIT_ROOT)/test
 
 full-regrest-demo:
 	$(eval FILTER := $(shell make run command="regrest --changed-since=master --coverage-file=test/Fixtures/PhpProjectUsingPhpunit/test/output/coverage.php --framework=phpunit"))
-	@echo '--filter options from PHPUnit: ' "$(FILTER)"
+	@echo '.'
+	make inception-echo argument="--filter option for PHPUnit: '$(FILTER)'"
+	@echo '.'
 	make regression-test-phpunit options="--filter '$(FILTER)'";
+
+
+.PHONY: inseption-echo
+inception-echo:
+	echo $(argument)
 
 #FILTER=`make run command="regrest --changed-since=master --coverage-file=test/Fixtures/PhpProjectUsingPhpunit/test/output/coverage.php --framework=phpunit"`;
 #make regression-test-phpunit options="--filter '$FILTER'";
