@@ -29,7 +29,7 @@ class Runner
 				$testsToRun = $regrest->getListOfTestsToRun();
 
 				if ($testsToRun) {
-					$phpUnitFilterOption = implode('|', $testsToRun);
+					$phpUnitFilterOption = '"' . implode('|', $testsToRun) . '"';
 				} else {
 					$phpUnitFilterOption = 'NOTHING_TO_RUN';
 				}

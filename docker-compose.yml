@@ -3,7 +3,7 @@ version: '3.8'
 services:
   php:
     build:
-      context: docker/php
+      context: docker/php/dev
     working_dir: /app
     environment:
       - PHP_IDE_CONFIG=serverName=docker

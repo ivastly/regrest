@@ -27,11 +27,6 @@ Because there is an infinite amount of edge cases when this approach can lead to
 In short, **Regrest detects all software defects introduced by changes of "green" code from test coverage report**.
 If the defect is introduced by some other changes (e.g. you messed up Dockerfile of some dependency), this tool cannot detect that.
 
-## Installation.
-```bash
-git clone https://github.com/ivastly/regrest
-ln -s $(pwd)/regrest/bin/regrest /usr/bin/regrest
-```
 
 ### Prerequisites.
 * git as VCS
@@ -39,17 +34,25 @@ ln -s $(pwd)/regrest/bin/regrest /usr/bin/regrest
 
 
 ## Usage.
-```bash
-# PHPUnit
-# In case of PHPUnit, @tests placeholder will be replaced with `--filter 'Path\To\Test1|...|Path\To\TestN'`
 
-regrest --changes-since=origin/master --coverage-file=/path/to/coverage.php --command="vendor/bin/phpunit @tests test" --framework="phpunit"
+## PHPUnit.
+* Make sure coverage report in PHP format `/path/to/coverage.php` is up-to-date.
+* Apply your changes to .php files in your project, as usual...
+* Pass `regrest` output to PHPUnit's `--filter` option, so only **covering current changes** tests will be run, not all of them.
+
+```bash
+phpunit test ..your own phpunit options.. --filter=`docker run ivastly/regrest --changes-since=origin/master --coverage-file=/path/to/coverage.php --framework="phpunit"`
+```
+
+## Codeception.
+```bash
+# TODO
 ```
 
 ## How it works in action.
 *TODO gif here*
 
-## Supported frameworks.
+## Supported test frameworks and coverage formats
 Framework | Coverage Format | Language | Support
 --- | --- | ---
 PHPUnit | PHPUnit .php | PHP | 🟢
