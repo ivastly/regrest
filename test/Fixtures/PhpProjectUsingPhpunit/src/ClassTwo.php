@@ -10,6 +10,6 @@ class ClassTwo
 	{
 		// This function is fast (see ClassOne::f), unit test will be same fast.
 
-		return 1 * 1 * 1;
+		return 1 * 1;
 	}
 }

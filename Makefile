@@ -1,5 +1,5 @@
 XDEBUG_OPTIONS=-dxdebug.remote_enable=1 -dxdebug.remote_autostart=1 -dxdebug.remote_host="host.docker.internal" -dxdebug.idekey=IDEKEY -dxdebug.remote_port=9008
-PHP=docker-compose run php php
+PHP=docker-compose run php php 2>/dev/null
 PHPUNIT_ROOT=test/Fixtures/PhpProjectUsingPhpunit
 
 .PHONY: run
@@ -27,9 +27,10 @@ run-regrest-phpunit:
 run-test-suite-with-regrest-phpunit:
 	@echo "Run the following command:"
 # fish shell
-	@echo make regression-test-phpunit options=--filter=\"\(make run-regrest-phpunit\)\"
+	@echo make regression-test-phpunit options=--filter=\(make run-regrest-phpunit\)
 
 # Regular PHPUnit test suite run <-- this command relates to one from userland Makefile
 .PHONY: regression-test-phpunit
 regression-test-phpunit:
-	${PHP} $(PHPUNIT_ROOT)/vendor/bin/phpunit --debug --colors=always --bootstrap $(PHPUNIT_ROOT)/vendor/autoload.php --coverage-filter=$(PHPUNIT_ROOT)/src $(options) $(PHPUNIT_ROOT)/test
+	${PHP} $(PHPUNIT_ROOT)/vendor/bin/phpunit --debug --colors=always --bootstrap $(PHPUNIT_ROOT)/vendor/autoload.php --coverage-filter=$(PHPUNIT_ROOT)/src \
+	 $(options) $(PHPUNIT_ROOT)/test
