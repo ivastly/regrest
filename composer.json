@@ -11,11 +11,20 @@
     ],
     "require": {
         "php": "7.4|8.*",
-        "symfony/console": "^5.1"
+        "symfony/console": "^5.1",
+        "phpunit/php-code-coverage": "^9.2",
+        "webmozart/assert": "^1.9",
+        "cpliakas/git-wrapper": "^3.0",
+        "symfony/process": "^5.1"
     },
     "autoload": {
         "psr-4": {
             "Ivastly\\Regrest\\": "src/"
+        }
+    },
+    "config": {
+        "platform": {
+            "php": "7.4"
         }
     }
 }

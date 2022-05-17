@@ -22,18 +22,11 @@ Because there is an infinite amount of edge cases when this approach can lead to
 * configuration changes
 * test environment changes
 * fixture changes
-* usage of `rand`, 
-* usage of `eval`, or any other form of exotic source code loading
-* etc.
+* usage of `eval`, `rand`, network, etc.
 
 To be precise, **Regrest detects all test-detectable software defects introduced by changes of "green" code from test coverage report**.
 If the defect is introduced by some other changes (e.g. you messed up Dockerfile of some dependency), this tool cannot detect that.
 
-## Installation.
-```bash
-git clone https://github.com/ivastly/regrest
-ln -s $(pwd)/regrest/bin/regrest /usr/bin/regrest
-```
 
 ### Prerequisites.
 * git as VCS
@@ -41,24 +34,32 @@ ln -s $(pwd)/regrest/bin/regrest /usr/bin/regrest
 
 
 ## Usage.
-```bash
-# PHPUnit
-regrest --tests-dir=/path/to/tests --changes-since=master --coverage-file=/path/to/coverage.json --command="vendor/bin/phpunit" --framework="phpunit"
 
-# Codeception (`test-all` target launches Codeception, @tests is replaced by the actual list of tests in the `--command` option)
-regrest --tests-dir=/path/to/tests --changes-since=master --coverage-file=/path/to/coverage.json --command="make tests-all @tests" --framework="codeception"
+## PHPUnit.
+* Make sure coverage report in PHP format `/path/to/coverage.php` is up-to-date.
+* Apply your changes to .php files in your project, as usual...
+* Pass `regrest` output to PHPUnit's `--filter` option, so only **covering current changes** tests will be run, not all of them.
+
+```bash
+phpunit test ..your own phpunit options.. --filter=`docker run ivastly/regrest --changes-since=origin/master --coverage-file=/path/to/coverage.php --framework="phpunit"`
+```
+
+## Codeception.
+```bash
+# TODO
 ```
 
 ## How it works in action.
 *TODO gif here*
 
-## Supported coverage formats.
-Format | Support
---- | ---
-coverage.json | yes
-
-## Supported frameworks.
-Framework | Language | Support
+## Supported test frameworks and coverage formats
+Framework | Coverage Format | Language | Support
 --- | --- | ---
-PHPUnit | PHP | yes
-Codeception | PHP | yes
+PHPUnit | PHPUnit .php | PHP | 🟢
+Codeception | PHPUnit .php | PHP | 🟡 
+
+## Contributing.
+Contributions are welcome.
+
+## License.
+see [LICENSE](/LICENSE)

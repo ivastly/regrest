@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
 	<configuration default="false" name="docker" type="PhpRemoteDebugRunConfigurationType" factoryName="PHP Remote Debug" singleton="false"
-				   filter_connections="FILTER" server_name="docker php" session_id="IDEKEY">
+				   filter_connections="FILTER" server_name="docker" session_id="IDEKEY">
 		<method v="2"/>
 	</configuration>
 </component>

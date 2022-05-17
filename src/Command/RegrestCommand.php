@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Ivastly\Regrest\Command;
 
 use InvalidArgumentException;
+use Ivastly\Regrest\Presentation\Runner;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Webmozart\Assert\Assert;
 
-class RegressionTestCommand extends Command
+class RegrestCommand extends Command
 {
 	protected static $defaultName = 'regrest';
 
@@ -18,20 +20,21 @@ class RegressionTestCommand extends Command
 
 	private string $coverageFile;
 
-	private string $command;
-
 	private string $framework;
+
+	public const  PHPUNIT_FRAMEWORK = 'phpunit';
+	private const ALL_FRAMEWORKS    = [
+		self::PHPUNIT_FRAMEWORK,
+	];
 
 	protected function configure(): void
 	{
-		// regrest --changed-since=master --coverage-file=/path/to/coverage.json --command="vendor/bin/phpunit" --framework="phpunit"
-
 		$this->addOption(
 			'changed-since',
 			null,
 			InputOption::VALUE_REQUIRED,
 			'git branch name which is compared against current one.',
-			'master'
+			'origin/master'
 		);
 
 		$this->addOption(
@@ -39,13 +42,6 @@ class RegressionTestCommand extends Command
 			null,
 			InputOption::VALUE_REQUIRED,
 			'Path to file with test coverage information, e.g. /path/to/coverage.json'
-		);
-
-		$this->addOption(
-			'command',
-			null,
-			InputOption::VALUE_REQUIRED,
-			'CLI command which runs the test suite, e.g. vendor/bin/phpunit. This option must comply with `--framework` option.'
 		);
 
 		$this->addOption(
@@ -61,18 +57,23 @@ class RegressionTestCommand extends Command
 
 	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
-		try
-		{
+		try {
 			$this->readOptions($input);
 		}
-		catch (InvalidArgumentException $exception)
-		{
+		catch (InvalidArgumentException $exception) {
 			$output->writeln($exception->getMessage());
 
 			return self::FAILURE;
 		}
 
-		$output->writeln('Done.');
+		$runner = new Runner();
+
+		$runner->run(
+			$this->changedSince,
+			$this->coverageFile,
+			$this->framework,
+			$output
+		);
 
 		return self::SUCCESS;
 	}
@@ -81,27 +82,20 @@ class RegressionTestCommand extends Command
 	{
 		$this->changedSince = (string)$input->getOption('changed-since');
 
-		if (!$input->hasOption('coverage-file'))
-		{
+		if (!$input->getOption('coverage-file')) {
 			throw new InvalidArgumentException('--coverage-file option is required.');
 		}
 
 		$this->coverageFile = (string)$input->getOption('coverage-file');
-		if (!file_exists($this->coverageFile))
-		{
+		if (!file_exists($this->coverageFile)) {
 			throw new InvalidArgumentException("Coverage file {$this->coverageFile} is not readable.");
 		}
 
-		if (!$input->hasOption('command'))
-		{
-			throw new InvalidArgumentException('--command option is required.');
-		}
-		$this->command = (string)$input->getOption('command');
-
-		if (!$input->hasOption('framework'))
-		{
+		if (!$input->getOption('framework')) {
 			throw new InvalidArgumentException('framework option is required.');
 		}
+
 		$this->framework = (string)$input->getOption('framework');
+		Assert::inArray($this->framework, self::ALL_FRAMEWORKS);
 	}
 }
